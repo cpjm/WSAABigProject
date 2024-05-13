@@ -100,5 +100,4 @@ class BookDAO:
             currentkey = currentkey + 1 
         return book
 
-        
 bookDAO = BookDAO()
