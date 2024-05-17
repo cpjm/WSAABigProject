@@ -9,7 +9,8 @@ import json
 
 url = "https://streaming-availability.p.rapidapi.com/shows/search/filters"
 
-querystring = {"country":"ie","show_type":"movie","series_granularity":"show","order_by":"original_title","output_language":"en","order_direction":"asc","genres_relation":"and"}
+querystring = {"country":"ie","show_type":"movie","series_granularity":"show","order_by":"original_title",\
+               "output_language":"en","order_direction":"asc","genres_relation":"and"}
 
 headers = {
 	"X-RapidAPI-Key": "48f6e1b26fmsh5e38f8360a33b4ep1e4ae5jsnd035d4a8a6e0",
@@ -38,6 +39,12 @@ r = requests.get(url, headers=headers, params=querystring)
 data = r.json()
 #s1 = json.dumps(r.json())
 #d2 = json.loads(s1)
+print("len(data):",str(len(data)))
+input("Pausing...")
 
 with open('testapi.json', 'w') as f:
     json.dump(data, f)
+    #for line in data["shows"]:
+    #    f.write(json.dumps(line) + "\n")
+
+f.close()
