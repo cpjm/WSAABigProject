@@ -1,8 +1,33 @@
-# To run this test I execute the code and output to a log file.
+# testapi.py (STAGE 1 of 2)
+# Input: https://streaming-availability.p.rapidapi.com/shows/search/filters
+# Output: testapi.json
+#
+# This python program reads information in from the API web service.
+# The API provies a JSON response.
+# It then writes the json data to a file called testapi.json.
+# The API is from rapidapi.com
+# This particular API contains movie/cinema info that mirrors IMDB.
+# Info of the web page for the service can be read at:- 
+# https://rapidapi.com/movie-of-the-night-movie-of-the-night-default/api/streaming-availability/pricing
+#
+# Initially to run this test I executed the code and output to a log file.
+# The program contained many different print statements to assist with debugging.
 # This facilitates a quick output to a file for inspection afterwards.
 # e.g. python testapi.py > testapi.log
-# I can then open this using Notepad++, and use plugin > JasonTools > Pretty-print current json file
-# and this produces a more readable format, which is useful for working out what info/fields are returned.
+# Additionally I can open the JSON file using Notepad++, and use plugin > JasonTools > Pretty-print current json file
+# and this produces a more readable format of the JSON fields/info.
+#
+# 2 Stage process explained.
+# The reason behind the 2 stages/programs is due to usage limits on the API itself.  
+# STAGE 1 (testapi.py) - read the API JSON and write to the JSON file.
+# STAGE 2 (jsontomysql.py) - Then the second program can be run multiple times on the file.
+#   Therefore the file copy acts like a cached version of the API JSON. 
+#   This facilitates more debugging and testing without breaching the API access limits.
+#
+# jsontomysql.py (STAGE 2)
+# NOTE - A second "stage 2" program exists called jsontomysql.py
+# This program exists to read the JSON file and write the info to the MySQL DB.
+#
 #
 import requests
 import json

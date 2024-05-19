@@ -4,7 +4,7 @@
 # Based on original code by Author: Andrew Beatty
 import mysql.connector
 import dbconfig as cfg
-class BookDAO:
+class streamingshowsDAO:
     connection=""
     cursor =''
     host=       ''
@@ -34,7 +34,7 @@ class BookDAO:
          
     def getAll(self):
         cursor = self.getcursor()
-        sql="select * from book"
+        sql="select * from streamingshows"
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
@@ -48,7 +48,7 @@ class BookDAO:
 
     def findByID(self, id):
         cursor = self.getcursor()
-        sql="select * from book where id = %s"
+        sql="select * from streamingshows where id = %s"
         values = (id,)
 
         cursor.execute(sql, values)
@@ -57,31 +57,37 @@ class BookDAO:
         self.closeAll()
         return returnvalue
 
-    def create(self, book):
+    def create(self, streamingshows):
         cursor = self.getcursor()
-        sql="insert into book (title,author, price) values (%s,%s,%s)"
-        values = (book.get("title"), book.get("author"), book.get("price"))
+        sql="insert into streamingshows (my_review,my_ratepercent,my_recommend_yn) values (%s,%s,%s)"
+        values = (streamingshows.get("my_review"), streamingshows.get("my_ratepercent"), streamingshows.get("my_recommend_yn"))
         cursor.execute(sql, values)
 
         self.connection.commit()
         newid = cursor.lastrowid
-        book["id"] = newid
+        streamingshows["id"] = newid
         self.closeAll()
-        return book
+        return streamingshows
 
 
-    def update(self, id, book):
+    def update(self, id, streamingshows):
         cursor = self.getcursor()
-        sql="update book set title= %s,author=%s, price=%s  where id = %s"
-        print(f"update book {book}")
-        values = (book.get("title"), book.get("author"), book.get("price"),id)
+        sql="update streamingshows set my_review= %s,my_ratepercent=%s, my_recommend_yn=%s  where id = %s"
+        print(f"update streamingshows {streamingshows}")
+        values = (streamingshows.get("my_review"), streamingshows.get("my_ratepercent"), streamingshows.get("my_recommend_yn"),id)
         cursor.execute(sql, values)
         self.connection.commit()
         self.closeAll()
         
     def delete(self, id):
         cursor = self.getcursor()
-        sql="delete from book where id = %s"
+        # Here the record won't physically be deleted.
+        # Rather the record needs to be updated, as the user review info
+        # is on the same record as the API show info.
+        # So therefore the review fields are updated with blanks
+        # ie they are blanked out.
+        #sql="delete from streamingshows where id = %s"
+        sql="update streamingshows set my_review="",my_ratepercent="", my_recommend_yn=""  where id = %s"
         values = (id,)
 
         cursor.execute(sql, values)
@@ -92,12 +98,12 @@ class BookDAO:
         print("delete done")
 
     def convertToDictionary(self, resultLine):
-        attkeys=['id','title','author', "price"]
-        book = {}
+        attkeys=['id','my_review','my_ratepercent', "my_recommend_yn"]
+        streamingshows = {}
         currentkey = 0
         for attrib in resultLine:
-            book[attkeys[currentkey]] = attrib
+            streamingshows[attkeys[currentkey]] = attrib
             currentkey = currentkey + 1 
-        return book
+        return streamingshows
 
-bookDAO = BookDAO()
+streamingshowsDAO = streamingshowsDAO()

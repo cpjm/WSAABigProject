@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, abort
-from DAO import bookDAO
+from DAO import streamingshowsDAO
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
@@ -9,41 +9,41 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 def index():
     return "Hello, World!"
 
-#curl "http://127.0.0.1:5000/books"
-@app.route('/books')
+#curl "http://127.0.0.1:5000/streamingshowss"
+@app.route('/streamingshowss')
 def getAll():
     #print("in getall")
-    results = bookDAO.getAll()
+    results = streamingshowsDAO.getAll()
     return jsonify(results)
 
-#curl "http://127.0.0.1:5000/books/2"
-@app.route('/books/<int:id>')
+#curl "http://127.0.0.1:5000/streamingshowss/2"
+@app.route('/streamingshowss/<int:id>')
 def findById(id):
-    foundBook = bookDAO.findByID(id)
+    foundstreamingshows = streamingshowsDAO.findByID(id)
 
-    return jsonify(foundBook)
+    return jsonify(foundstreamingshows)
 
-#curl  -i -H "Content-Type:application/json" -X POST -d "{\"title\":\"hello\",\"author\":\"someone\",\"price\":123}" http://127.0.0.1:5000/books
-@app.route('/books', methods=['POST'])
+#curl  -i -H "Content-Type:application/json" -X POST -d "{\"title\":\"hello\",\"author\":\"someone\",\"price\":123}" http://127.0.0.1:5000/streamingshowss
+@app.route('/streamingshowss', methods=['POST'])
 def create():
     
     if not request.json:
         abort(400)
     # other checking 
-    book = {
+    streamingshows = {
         "title": request.json['title'],
         "author": request.json['author'],
         "price": request.json['price'],
     }
-    addedbook = bookDAO.create(book)
+    addedstreamingshows = streamingshowsDAO.create(streamingshows)
     
-    return jsonify(addedbook)
+    return jsonify(addedstreamingshows)
 
-#curl  -i -H "Content-Type:application/json" -X PUT -d "{\"title\":\"hello\",\"author\":\"someone\",\"price\":123}" http://127.0.0.1:5000/books/1
-@app.route('/books/<int:id>', methods=['PUT'])
+#curl  -i -H "Content-Type:application/json" -X PUT -d "{\"title\":\"hello\",\"author\":\"someone\",\"price\":123}" http://127.0.0.1:5000/streamingshowss/1
+@app.route('/streamingshowss/<int:id>', methods=['PUT'])
 def update(id):
-    foundBook = bookDAO.findByID(id)
-    if not foundBook:
+    foundstreamingshows = streamingshowsDAO.findByID(id)
+    if not foundstreamingshows:
         abort(404)
     
     if not request.json:
@@ -53,20 +53,20 @@ def update(id):
         abort(400)
 
     if 'title' in reqJson:
-        foundBook['title'] = reqJson['title']
+        foundstreamingshows['title'] = reqJson['title']
     if 'author' in reqJson:
-        foundBook['author'] = reqJson['author']
+        foundstreamingshows['author'] = reqJson['author']
     if 'price' in reqJson:
-        foundBook['price'] = reqJson['price']
-    bookDAO.update(id,foundBook)
-    return jsonify(foundBook)
+        foundstreamingshows['price'] = reqJson['price']
+    streamingshowsDAO.update(id,foundstreamingshows)
+    return jsonify(foundstreamingshows)
         
 
     
 
-@app.route('/books/<int:id>' , methods=['DELETE'])
+@app.route('/streamingshowss/<int:id>' , methods=['DELETE'])
 def delete(id):
-    bookDAO.delete(id)
+    streamingshowsDAO.delete(id)
     return jsonify({"done":True})
 
 
