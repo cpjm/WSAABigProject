@@ -129,7 +129,7 @@
         streamingshows.id  = rowElement.getAttribute('id')
         streamingshows.my_review = rowElement.cells[1].firstChild.textContent
         streamingshows.my_ratepercent = rowElement.cells[2].firstChild.textContent
-        streamingshows.my_recommend_yn = parseInt(rowElement.cells[3].firstChild.textContent,10)
+        streamingshows.my_recommend_yn = rowElement.cells[3].firstChild.textContent
         return streamingshows
     }
     function setstreamingshowsInRow(rowElement, streamingshows){
@@ -154,7 +154,7 @@
         streamingshows.id = form.querySelector('input[name="id"]').value
         streamingshows.my_review = form.querySelector('input[name="my_review"]').value
         streamingshows.my_ratepercent = form.querySelector('input[name="my_ratepercent"]').value
-        streamingshows.my_recommend_yn = parseInt(form.querySelector('input[name="my_recommend_yn"]').value,10)
+        streamingshows.my_recommend_yn = form.querySelector('input[name="my_recommend_yn"]').value
         console.log(JSON.stringify(streamingshows))
         return streamingshows
     }

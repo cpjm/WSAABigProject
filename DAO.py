@@ -34,7 +34,7 @@ class streamingshowsDAO:
          
     def getAll(self):
         cursor = self.getcursor()
-        sql="select * from streamingshows"
+        sql="select * from streaming_shows"
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
@@ -48,7 +48,7 @@ class streamingshowsDAO:
 
     def findByID(self, id):
         cursor = self.getcursor()
-        sql="select * from streamingshows where id = %s"
+        sql="select * from streaming_shows where id = %s"
         values = (id,)
 
         cursor.execute(sql, values)
@@ -59,7 +59,7 @@ class streamingshowsDAO:
 
     def create(self, streamingshows):
         cursor = self.getcursor()
-        sql="insert into streamingshows (my_review,my_ratepercent,my_recommend_yn) values (%s,%s,%s)"
+        sql="insert into streamings_hows (my_review,my_ratepercent,my_recommend_yn) values (%s,%s,%s)"
         values = (streamingshows.get("my_review"), streamingshows.get("my_ratepercent"), streamingshows.get("my_recommend_yn"))
         cursor.execute(sql, values)
 
@@ -72,7 +72,7 @@ class streamingshowsDAO:
 
     def update(self, id, streamingshows):
         cursor = self.getcursor()
-        sql="update streamingshows set my_review= %s,my_ratepercent=%s, my_recommend_yn=%s  where id = %s"
+        sql="update streaming_shows set my_review= %s,my_ratepercent=%s, my_recommend_yn=%s  where id = %s"
         print(f"update streamingshows {streamingshows}")
         values = (streamingshows.get("my_review"), streamingshows.get("my_ratepercent"), streamingshows.get("my_recommend_yn"),id)
         cursor.execute(sql, values)
@@ -87,7 +87,7 @@ class streamingshowsDAO:
         # So therefore the review fields are updated with blanks
         # ie they are blanked out.
         #sql="delete from streamingshows where id = %s"
-        sql="update streamingshows set my_review="",my_ratepercent="", my_recommend_yn=""  where id = %s"
+        sql="update streaming_shows set my_review="",my_ratepercent="", my_recommend_yn=""  where id = %s"
         values = (id,)
 
         cursor.execute(sql, values)
