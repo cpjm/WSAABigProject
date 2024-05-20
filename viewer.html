@@ -2,25 +2,23 @@
     <head>
         <title> view streamingshows</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-       
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body>
-        <h1>streamingshowss</h1>
+        <h1>streamingshows</h1>
         <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
         <div>
             <table class="table" id="streamingshowsTable">
                 <tr>
                         <th>id</th>
                         <th>my_review</th>
-                        <th>
-                            my_ratepercent
-                        </th>
+                        <th>my_ratepercent</th>
                         <th>my_recommend_yn</th>
                         <th>Update</th>
                         <th>Delete</th>
                 </tr>
-                
+
             </table>
         </div>
         <div id='createUpdateForm' style="display: none">
@@ -28,7 +26,7 @@
                 <input type="hidden" name="id"/>
                 My Review <input type="text" name="my_review" /><br/>
                 My Rating Percent <input type="text" name="my_ratepercent"/> <br/>
-                Recommend (y/n) <input type="text" name="my_recommend_yn"/> <br/>
+                Recommend (Y/N) <input type="text" name="my_recommend_yn"/> <br/>
                 <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
                 <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
         </div>
@@ -65,7 +63,7 @@
 
         var rowElement = buttonElement.parentNode.parentNode
         // these is a way of finding the closest <tr> which would safer, closest()
-        
+
         var streamingshows = getstreamingshowsFromRow(rowElement)
         populateFormWithstreamingshows(streamingshows)
     }
@@ -73,21 +71,21 @@
         var form = document.getElementById('createUpdateForm')
 
         var streamingshows = {}
-       
+
         streamingshows.my_review = form.querySelector('input[name="my_review"]').value
         streamingshows.my_ratepercent = form.querySelector('input[name="my_ratepercent"]').value
-        streamingshows.price = form.querySelector('input[name="my_recommend_yn"]').value
+        streamingshows.my_recommend_yn = form.querySelector('input[name="my_recommend_yn"]').value
         console.log(JSON.stringify(streamingshows))
         createstreamingshowsAjax(streamingshows)
-        
-        
+
+
     }
     function doUpdate(){
         var streamingshows = getstreamingshowsFromForm();
         var rowElement = document.getElementById(streamingshows.id);
         updatestreamingshowsAjax(streamingshows);
         setstreamingshowsInRow(rowElement,streamingshows);
-       
+
         clearForm();
         showViewAll();
     }
@@ -125,7 +123,7 @@
         form.querySelector('input[name="my_recommend_yn"]').value=''
     }
     function getstreamingshowsFromRow(rowElement){
-        var car ={}
+        var streamingshows ={}
         streamingshows.id  = rowElement.getAttribute('id')
         streamingshows.my_review = rowElement.cells[1].firstChild.textContent
         streamingshows.my_ratepercent = rowElement.cells[2].firstChild.textContent
@@ -133,8 +131,8 @@
         return streamingshows
     }
     function setstreamingshowsInRow(rowElement, streamingshows){
-        rowElement.cells[0].firstChild.textContent= streamingshows.id  
-        rowElement.cells[1].firstChild.textContent= streamingshows.my_review 
+        rowElement.cells[0].firstChild.textContent= streamingshows.id
+        rowElement.cells[1].firstChild.textContent= streamingshows.my_review
         rowElement.cells[2].firstChild.textContent= streamingshows.my_ratepercent
         rowElement.cells[3].firstChild.textContent= streamingshows.my_recommend_yn
     }
@@ -143,7 +141,7 @@
         form.querySelector('input[name="id"]').disabled = true
 
         form.querySelector('input[name="id"]').value  = streamingshows.id
-        form.querySelector('input[name="my_review"]').my_review= streamingshows.my_review
+        form.querySelector('input[name="my_review"]').value= streamingshows.my_review
         form.querySelector('input[name="my_ratepercent"]').value= streamingshows.my_ratepercent
         form.querySelector('input[name="my_recommend_yn"]').value= streamingshows.my_recommend_yn
         return streamingshows
@@ -165,21 +163,20 @@
             "data":"",
             "dataType": "JSON",
             "success":function(result){
-                //console.log(result);
+                console.log(result);
                 for (streamingshows of result){
                     addstreamingshowsToTable(streamingshows);
                 }
-                
+
             },
             //"error":function(xhr,status,error){
-            "error":function(xhr,status,error){
+            "error":function(status,error){
                 console.log("error: "+status+" msg:"+error);
             }
         });
 
     }
     function createstreamingshowsAjax(streamingshows){
-        //var streamingshows = {"title":"yoto", "author":"momo","price":800}
         console.log(JSON.stringify(streamingshows));
         $.ajax({
             "url": "/streamingshows",
@@ -194,13 +191,13 @@
                 clearForm()
                 showViewAll()
             },
-            "error":function(xhr,status,error){
+            //"error":function(xhr,status,error){
+            "error":function(status,error){
                 console.log("error: "+status+" msg:"+error);
             }
         });
     }
     function updatestreamingshowsAjax(streamingshows){
-        //var streamingshows = {"title":"yoto", "author":"momo","price":800}
         console.log(JSON.stringify(streamingshows));
         $.ajax({
             "url": "/streamingshows/"+encodeURI(streamingshows.id),
@@ -210,15 +207,16 @@
             contentType: "application/json; charset=utf-8",
             "success":function(result){
                // console.log(result);
-                  
+
             },
-            "error":function(xhr,status,error){
+            //"error":function(xhr,status,error){
+            "error":function(status,error){
                 console.log("error: "+status+" msg:"+error);
             }
         });
     }
     function deletestreamingshowsAjax(id){
-        
+
         //console.log(JSON.stringify('deleting '+id));
         $.ajax({
             "url": "/streamingshowss/"+encodeURI(id),
@@ -228,16 +226,17 @@
             contentType: "application/json; charset=utf-8",
             "success":function(result){
                 //console.log(result);
-                  
+
             },
-            "error":function(xhr,status,error){
+            //"error":function(xhr,status,error){
+            "error":function(status,error){
                 console.log("error: "+status+" msg:"+error);
             }
         });
     }
     getAllAjax();
-  
 
-    
+
+
     </script>
 </html>
