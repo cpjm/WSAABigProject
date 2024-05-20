@@ -34,7 +34,8 @@ class streamingshowsDAO:
 
     def getAll(self):
         cursor = self.getcursor()
-        sql="select id, my_review, my_ratepercent, my_recommend_yn  from streamingshows"
+        #sql="select id, my_review, my_ratepercent, my_recommend_yn  from streamingshows"
+        sql="select id, title,overview,genres_name,streamingOptions_ie_service_name, my_review, my_ratepercent, my_recommend_yn from streamingshows"
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
@@ -48,7 +49,7 @@ class streamingshowsDAO:
 
     def findByID(self, id):
         cursor = self.getcursor()
-        sql="select id, my_review, my_ratepercent, my_recommend_yn from streamingshows where id = %s"
+        sql="select id, title,overview,genres_name,streamingOptions_ie_service_name, my_review, my_ratepercent, my_recommend_yn from streamingshows where id = %s"
         values = (id)
         #values = (id,)
 
@@ -106,7 +107,7 @@ class streamingshowsDAO:
         print("delete done")
 
     def convertToDictionary(self, resultLine):
-        attkeys=['id','my_review','my_ratepercent', "my_recommend_yn"]
+        attkeys=['id',"title","overview","genres_name,streamingOptions_ie_service_name", 'my_review','my_ratepercent', "my_recommend_yn"]
         streamingshows = {}
         currentkey = 0
         for attrib in resultLine:

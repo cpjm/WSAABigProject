@@ -12,15 +12,19 @@
             <table class="table" id="streamingshowsTable">
                 <tr>
                         <th>id</th>
+                        <th>title</th>
+                        <th>overview</th>
+                        <th>genres_name</th>
+                        <th>streamingOptions_ie_service_name</th>
                         <th>my_review</th>
                         <th>my_ratepercent</th>
                         <th>my_recommend_yn</th>
                         <th>Update</th>
                         <th>Delete</th>
                 </tr>
-
             </table>
         </div>
+
         <div id='createUpdateForm' style="display: none">
                 <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> streamingshows</h2>
                 <input type="hidden" name="id"/>
@@ -72,6 +76,10 @@
 
         var streamingshows = {}
 
+        streamingshows.title = form.querySelector('input[name="title"]').value
+        streamingshows.overview = form.querySelector('input[name="overview"]').value
+        streamingshows.genres_name = form.querySelector('input[name="genres_name"]').value
+        streamingshows.streamingOptions_ie_service_name = form.querySelector('input[name="streamingOptions_ie_service_name"]').value
         streamingshows.my_review = form.querySelector('input[name="my_review"]').value
         streamingshows.my_ratepercent = form.querySelector('input[name="my_ratepercent"]').value
         streamingshows.my_recommend_yn = form.querySelector('input[name="my_recommend_yn"]').value
@@ -103,15 +111,23 @@
         var cell1 = rowElement.insertCell(0);
         cell1.innerHTML = streamingshows.id
         var cell2 = rowElement.insertCell(1);
-        cell2.innerHTML = streamingshows.my_review
+        cell2.innerHTML = streamingshows.title
         var cell3 = rowElement.insertCell(2);
-        cell3.innerHTML = streamingshows.my_ratepercent
+        cell3.innerHTML = streamingshows.overview
         var cell4 = rowElement.insertCell(3);
-        cell4.innerHTML = streamingshows.my_recommend_yn
+        cell4.innerHTML = streamingshows.genres_name
         var cell5 = rowElement.insertCell(4);
-        cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+        cell5.innerHTML = streamingshows.streamingOptions_ie_service_name
         var cell6 = rowElement.insertCell(5);
-        cell6.innerHTML = '<button onclick=doDelete(this)>delete</button>'
+        cell6.innerHTML = streamingshows.my_review
+        var cell7 = rowElement.insertCell(6);
+        cell7.innerHTML = streamingshows.my_ratepercent
+        var cell8 = rowElement.insertCell(7);
+        cell8.innerHTML = streamingshows.my_recommend_yn
+        var cell9 = rowElement.insertCell(8);
+        cell9.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+        var cell10 = rowElement.insertCell(9);
+        cell10.innerHTML = '<button onclick=doDelete(this)>delete</button>'
 
     }
 
@@ -125,14 +141,21 @@
     function getstreamingshowsFromRow(rowElement){
         var streamingshows ={}
         streamingshows.id  = rowElement.getAttribute('id')
-        streamingshows.my_review = rowElement.cells[1].firstChild.textContent
-        streamingshows.my_ratepercent = rowElement.cells[2].firstChild.textContent
-        streamingshows.my_recommend_yn = rowElement.cells[3].firstChild.textContent
+        streamingshows.title = rowElement.cells[1].firstChild.textContent
+        streamingshows.overview = rowElement.cells[2].firstChild.textContent
+        streamingshows.genres_name = rowElement.cells[3].firstChild.textContent
+        streamingshows.streamingOptions_ie_service_name = rowElement.cells[4].firstChild.textContent
+        streamingshows.my_review = rowElement.cells[5].firstChild.textContent
+        streamingshows.my_ratepercent = rowElement.cells[6].firstChild.textContent
+        streamingshows.my_recommend_yn = rowElement.cells[7].firstChild.textContent
         return streamingshows
     }
     function setstreamingshowsInRow(rowElement, streamingshows){
         rowElement.cells[0].firstChild.textContent= streamingshows.id
-        rowElement.cells[1].firstChild.textContent= streamingshows.my_review
+        rowElement.cells[1].firstChild.textContent= streamingshows.title
+        rowElement.cells[2].firstChild.textContent= streamingshows.overview
+        rowElement.cells[3].firstChild.textContent= streamingshows.genres_name
+        rowElement.cells[1].firstChild.textContent= streamingshows.streamingOptions_ie_service_name
         rowElement.cells[2].firstChild.textContent= streamingshows.my_ratepercent
         rowElement.cells[3].firstChild.textContent= streamingshows.my_recommend_yn
     }
@@ -166,6 +189,7 @@
                 console.log(result);
                 for (streamingshows of result){
                     addstreamingshowsToTable(streamingshows);
+                    addAPIstreamingshowsToTable(streamingshows);
                 }
 
             },
@@ -188,6 +212,7 @@
                 //console.log(result);
                 streamingshows.id = result.id
                 addstreamingshowsToTable(streamingshows)
+                addAPIstreamingshowsToTable(streamingshows)
                 clearForm()
                 showViewAll()
             },

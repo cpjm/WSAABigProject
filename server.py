@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, abort
-from DAO import streaming_showsDAO
+from DAO import streamingshowsDAO
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
@@ -9,64 +9,76 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 def index():
     return "Hello, World!"
 
-#curl "http://127.0.0.1:5000/streaming_shows"
-@app.route('/streaming_shows')
+#curl "http://127.0.0.1:5000/streamingshows"
+@app.route('/streamingshows')
 def getAll():
     #print("in getall")
-    results = streaming_showsDAO.getAll()
+    results = streamingshowsDAO.getAll()
     return jsonify(results)
 
-#curl "http://127.0.0.1:5000/streaming_shows/2"
-@app.route('/streaming_shows/<int:id>')
+#curl "http://127.0.0.1:5000/streamingshows/2"
+@app.route('/streamingshows/<int:id>')
 def findById(id):
-    foundstreaming_shows = streaming_showsDAO.findByID(id)
+    foundstreamingshows = streamingshowsDAO.findByID(id)
 
-    return jsonify(foundstreaming_shows)
+    return jsonify(foundstreamingshows)
 
-#curl  -i -H "Content-Type:application/json" -X POST -d "{\"title\":\"hello\",\"author\":\"someone\",\"price\":123}" http://127.0.0.1:5000/streaming_shows
-@app.route('/streaming_shows', methods=['POST'])
+#curl  -i -H "Content-Type:application/json" -X POST -d "{\"title\":\"hello\",\"author\":\"someone\",\"price\":123}" http://127.0.0.1:5000/streamingshows
+@app.route('/streamingshows', methods=['POST'])
 def create():
-    
+
     if not request.json:
         abort(400)
-    # other checking 
-    streaming_shows = {
+    # other checking
+    streamingshows = {
+        "title": request.json['title'],
+        "overview": request.json['overview'],
+        "genres_name": request.json['genres_name']
+        "streamingOptions_ie_service_name": request.json['streamingOptions_ie_service_name'],
         "my_review": request.json['my_review'],
         "my_ratepercent": request.json['my_ratepercent'],
-        "my_recommend_yn": request.json['my_recommend_yn'],
+        "my_recommend_yn": request.json['my_recommend_yn']
     }
-    addedstreaming_shows = streaming_showsDAO.create(streaming_shows)
-    
-    return jsonify(addedstreaming_shows)
+    addedstreamingshows = streamingshowsDAO.create(streamingshows)
 
-#curl  -i -H "Content-Type:application/json" -X PUT -d "{\"title\":\"hello\",\"author\":\"someone\",\"price\":123}" http://127.0.0.1:5000/streaming_showss/1
-@app.route('/streaming_shows/<int:id>', methods=['PUT'])
+    return jsonify(addedstreamingshows)
+
+#curl  -i -H "Content-Type:application/json" -X PUT -d "{\"title\":\"hello\",\"author\":\"someone\",\"price\":123}" http://127.0.0.1:5000/streamingshowss/1
+@app.route('/streamingshows/<int:id>', methods=['PUT'])
 def update(id):
-    foundstreaming_shows = streaming_showsDAO.findByID(id)
-    if not foundstreaming_shows:
+    foundstreamingshows = streamingshowsDAO.findByID(id)
+    if not foundstreamingshows:
         abort(404)
-    
+
     if not request.json:
         abort(400)
     reqJson = request.json
-    if 'my_recommend_yn' in reqJson and type(reqJson['my_recommend_yn']) is not int:
-        abort(400)
+    #if 'my_recommend_yn' in reqJson and type(reqJson['my_recommend_yn']) is not int:
+    #    abort(400)
 
+    if 'title' in reqJson:
+        foundstreamingshows['title'] = reqJson['title']
+    if 'overview' in reqJson:
+        foundstreamingshows['overview'] = reqJson['overview']
+    if 'genres_name' in reqJson:
+        foundstreamingshows['genres_name'] = reqJson['genres_name']
+    if 'streamingOptions_ie_service_name' in reqJson:
+        foundstreamingshows['streamingOptions_ie_service_name'] = reqJson['streamingOptions_ie_service_name']
     if 'my_review' in reqJson:
-        foundstreaming_shows['my_review'] = reqJson['my_review']
+        foundstreamingshows['my_review'] = reqJson['my_review']
     if 'my_ratepercent' in reqJson:
-        foundstreaming_shows['my_ratepercent'] = reqJson['my_ratepercent']
+        foundstreamingshows['my_ratepercent'] = reqJson['my_ratepercent']
     if 'my_recommend_yn' in reqJson:
-        foundstreaming_shows['my_recommend_yn'] = reqJson['my_recommend_yn']
-    streaming_showsDAO.update(id,foundstreaming_shows)
-    return jsonify(foundstreaming_shows)
-        
+        foundstreamingshows['my_recommend_yn'] = reqJson['my_recommend_yn']
+    streamingshowsDAO.update(id,foundstreamingshows)
+    return jsonify(foundstreamingshows)
 
-    
 
-@app.route('/streaming_shows/<int:id>' , methods=['DELETE'])
+
+
+@app.route('/streamingshows/<int:id>' , methods=['DELETE'])
 def delete(id):
-    streaming_showsDAO.delete(id)
+    streamingshowsDAO.delete(id)
     return jsonify({"done":True})
 
 
