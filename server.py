@@ -33,7 +33,7 @@ def create():
     streamingshows = {
         "title": request.json['title'],
         "overview": request.json['overview'],
-        "genres_name": request.json['genres_name']
+        "genres_name": request.json['genres_name'],
         "streamingOptions_ie_service_name": request.json['streamingOptions_ie_service_name'],
         "my_review": request.json['my_review'],
         "my_ratepercent": request.json['my_ratepercent'],
