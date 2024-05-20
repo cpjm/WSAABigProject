@@ -28,7 +28,7 @@
                 <input type="hidden" name="id"/>
                 My Review <input type="text" name="my_review" /><br/>
                 My Rating Percent <input type="text" name="my_ratepercent"/> <br/>
-                Recommend (y/n) <input type="number" name="my_recommend_yn"/> <br/>
+                Recommend (y/n) <input type="text" name="my_recommend_yn"/> <br/>
                 <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
                 <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
         </div>
@@ -171,6 +171,7 @@
                 }
                 
             },
+            //"error":function(xhr,status,error){
             "error":function(xhr,status,error){
                 console.log("error: "+status+" msg:"+error);
             }
